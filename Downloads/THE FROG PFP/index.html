@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Frog PFP — Whitelist</title>
+  <link rel="icon" type="image/png" href="img/frogPFP.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d1a0f;
+      --green:    #4caf50;
+      --lime:     #a8e063;
+      --mint:     #b2f5c8;
+      --teal:     #26c6a2;
+      --yellow:   #ffe566;
+      --orange:   #ffb347;
+      --pink:     #ff8fab;
+      --purple:   #c77dff;
+      --blue:     #74c7ec;
+      --white:    #f0fff4;
+      --dark:     #0a110b;
+      --card:     rgba(255,255,255,0.04);
+      --border:   rgba(168,224,99,0.15);
+      --lilita:   'Lilita One', cursive;
+      --nunito:   'Nunito', sans-serif;
+      --caveat:   'Caveat', cursive;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--nunito);
+      overflow-x: hidden;
+    }
+
+    /* ── WATERCOLOR BG ── */
+    .wc-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    /* Soft watercolor blobs */
+    .blob {
+      position: absolute;
+      border-radius: 60% 40% 55% 45% / 45% 55% 45% 55%;
+      filter: blur(60px);
+      mix-blend-mode: screen;
+      opacity: 0.09;
+    }
+
+    .b1 { width: 600px; height: 400px; background: #4caf50; top: -100px;  left: -150px; animation: drift1 12s ease-in-out infinite; }
+    .b2 { width: 500px; height: 350px; background: #74c7ec; top: 100px;   right: -100px; animation: drift2 15s ease-in-out infinite; }
+    .b3 { width: 400px; height: 300px; background: #c77dff; bottom: 50px; left: 10%;   animation: drift1 18s ease-in-out infinite reverse; }
+    .b4 { width: 350px; height: 250px; background: #ffe566; bottom: -80px;right: 15%;  animation: drift2 10s ease-in-out infinite; }
+    .b5 { width: 300px; height: 200px; background: #ff8fab; top: 45%;     left: 40%;   animation: drift1 14s ease-in-out infinite; opacity: 0.06; }
+
+    @keyframes drift1 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%      { transform: translate(30px,-20px) scale(1.05); }
+      66%      { transform: translate(-20px,15px) scale(0.97); }
+    }
+    @keyframes drift2 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%      { transform: translate(-25px,20px) scale(1.03); }
+      66%      { transform: translate(20px,-10px) scale(0.98); }
+    }
+
+    /* Subtle dot grid */
+    .wc-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(168,224,99,0.08) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: relative;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(13,26,15,0.85);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .frog-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(168,224,99,0.4);
+      box-shadow: 0 0 12px rgba(76,175,80,0.3);
+      overflow: hidden;
+    }
+
+    .frog-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @keyframes blink {
+      0%,92%,100% { transform: scaleY(1); }
+      96%          { transform: scaleY(0.1); }
+    }
+
+    .brand-text {
+      font-family: var(--lilita);
+      font-size: 18px;
+      color: var(--lime);
+      text-shadow: 0 0 20px rgba(168,224,99,0.4);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-handle {
+      font-family: var(--nunito);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: rgba(168,224,99,0.4);
+      text-decoration: none;
+      border: 1px solid rgba(168,224,99,0.15);
+      padding: 5px 14px;
+      border-radius: 20px;
+      transition: all 0.25s;
+    }
+    .nav-handle:hover {
+      color: var(--lime);
+      border-color: rgba(168,224,99,0.4);
+      background: rgba(168,224,99,0.06);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 60px 20px 40px;
+      animation: heroReveal 0.8s cubic-bezier(.16,1,.3,1) both;
+    }
+
+    @keyframes heroReveal {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Big frog SVG illustration */
+    .hero-frog {
+      font-size: 80px;
+      display: block;
+      margin: 0 auto 20px;
+      animation: hop 2.5s cubic-bezier(.36,.07,.19,.97) infinite;
+      filter: drop-shadow(0 8px 24px rgba(76,175,80,0.4));
+      line-height: 1;
+    }
+
+    @keyframes hop {
+      0%,100% { transform: translateY(0) scaleY(1); }
+      40%      { transform: translateY(-18px) scaleY(1.05); }
+      55%      { transform: translateY(0) scaleY(0.92); }
+      70%      { transform: translateY(-6px) scaleY(1.02); }
+      85%      { transform: translateY(0) scaleY(1); }
+    }
+
+    .hero-eyebrow {
+      font-family: var(--caveat);
+      font-size: 16px;
+      color: rgba(168,224,99,0.55);
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-family: var(--lilita);
+      font-size: clamp(48px, 9vw, 88px);
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 6px;
+      text-shadow: 0 4px 32px rgba(76,175,80,0.25);
+    }
+
+    .hero-title .hop { color: var(--lime); }
+    .hero-title .list { color: var(--yellow); }
+
+    .hero-tagline {
+      font-family: var(--caveat);
+      font-size: 20px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 12px;
+      font-style: italic;
+    }
+
+    /* Supply badges */
+    .badges {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--nunito);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1.5px solid;
+    }
+
+    .badge-green  { color: var(--lime);   border-color: rgba(168,224,99,0.3); background: rgba(168,224,99,0.07); }
+    .badge-blue   { color: var(--blue);   border-color: rgba(116,199,236,0.3); background: rgba(116,199,236,0.07); }
+    .badge-yellow { color: var(--yellow); border-color: rgba(255,229,102,0.3); background: rgba(255,229,102,0.07); }
+
+    /* ── LILY PAD DIVIDER ── */
+    .lily-divider {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 8px 0 40px;
+    }
+
+    .lily-line {
+      flex: 1;
+      max-width: 180px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(168,224,99,0.2), transparent);
+    }
+
+    .lily-icon { font-size: 22px; animation: spin 8s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── FORM ── */
+    .form-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+      animation: heroReveal 0.8s 0.18s cubic-bezier(.16,1,.3,1) both;
+    }
+
+    /* ── FIELD ── */
+    .field { margin-bottom: 20px; }
+
+    .field-label {
+      font-family: var(--nunito);
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(168,224,99,0.5);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .req-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--yellow);
+      display: inline-block;
+      box-shadow: 0 0 6px rgba(255,229,102,0.6);
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%,100% { box-shadow: 0 0 4px rgba(255,229,102,0.5); }
+      50%      { box-shadow: 0 0 10px rgba(255,229,102,0.9); }
+    }
+
+    .input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1.5px solid rgba(168,224,99,0.12);
+      color: var(--white);
+      font-family: var(--nunito);
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px 18px;
+      outline: none;
+      border-radius: 14px;
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+      letter-spacing: 0.03em;
+    }
+
+    .input::placeholder {
+      color: rgba(255,255,255,0.15);
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    .input:focus {
+      border-color: rgba(168,224,99,0.5);
+      background: rgba(168,224,99,0.04);
+      box-shadow: 0 0 0 3px rgba(168,224,99,0.08), 0 0 20px rgba(168,224,99,0.06);
+    }
+
+    .input.error {
+      border-color: rgba(255,100,100,0.5);
+      box-shadow: 0 0 0 3px rgba(255,100,100,0.08);
+    }
+
+    .err-msg {
+      font-family: var(--caveat);
+      font-size: 15px;
+      color: #ff8a80;
+      margin-top: 5px;
+      display: none;
+    }
+    .err-msg.show { display: block; }
+
+    /* ── TASKS BOX ── */
+    .tasks-box {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Watercolor wash inside */
+    .tasks-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 0% 0%, rgba(76,175,80,0.06) 0%, transparent 60%),
+                  radial-gradient(ellipse at 100% 100%, rgba(116,199,236,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .tasks-title {
+      font-family: var(--nunito);
+      font-weight: 800;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(168,224,99,0.4);
+      margin-bottom: 18px;
+    }
+
+    .task-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      position: relative;
+    }
+    .task-row + .task-row { margin-top: 14px; }
+
+    .task-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+
+    /* Frog-eye checkbox */
+    .task-cb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(168,224,99,0.25);
+      background: rgba(76,175,80,0.06);
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
+      transition: all 0.25s cubic-bezier(.175,.885,.32,1.275);
+    }
+
+    /* Inner pupil */
+    .task-cb::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(168,224,99,0.2);
+      transition: all 0.2s;
+    }
+
+    .task-cb:checked {
+      background: var(--lime);
+      border-color: var(--lime);
+      box-shadow: 0 0 14px rgba(168,224,99,0.5);
+      transform: scale(1.1);
+    }
+
+    .task-cb:checked::before {
+      background: #000;
+      width: 10px; height: 10px;
+    }
+
+    .task-cb:checked::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.7);
+    }
+
+    .task-text {
+      font-family: var(--nunito);
+      font-weight: 700;
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .task-row.done .task-text {
+      color: rgba(255,255,255,0.22);
+      text-decoration: line-through;
+      text-decoration-color: rgba(168,224,99,0.3);
+    }
+
+    /* Go button */
+    .go-btn {
+      font-family: var(--nunito);
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #0a110b;
+      background: var(--lime);
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      text-decoration: none;
+      border-radius: 10px;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(168,224,99,0.25);
+      transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+    }
+
+    .go-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(168,224,99,0.4);
+      background: #c5f279;
+    }
+
+    .go-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(168,224,99,0.2);
+    }
+
+    /* ── SUBMIT ── */
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #4caf50, #26c6a2);
+      color: #fff;
+      border: none;
+      font-family: var(--lilita);
+      font-size: 20px;
+      letter-spacing: 0.06em;
+      padding: 18px;
+      cursor: pointer;
+      border-radius: 16px;
+      margin-top: 20px;
+      box-shadow: 0 6px 24px rgba(76,175,80,0.3), 0 0 0 1px rgba(168,224,99,0.1);
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px rgba(76,175,80,0.4);
+    }
+
+    .submit-btn:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba(76,175,80,0.3);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── FLOATING FROGS ── */
+    .floaties {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .floaty {
+      position: absolute;
+      font-size: 24px;
+      animation: floatUp linear infinite;
+      opacity: 0;
+      user-select: none;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(105vh) rotate(0deg);   opacity: 0; }
+      8%   { opacity: 0.18; }
+      88%  { opacity: 0.12; }
+      100% { transform: translateY(-8vh) rotate(180deg);  opacity: 0; }
+    }
+
+    /* ── SUCCESS ── */
+    #success {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(10,17,11,0.92);
+      backdrop-filter: blur(20px);
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+    #success.show { display: flex; }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+    .success-card {
+      text-align: center;
+      background: rgba(13,26,15,0.95);
+      border: 1.5px solid rgba(168,224,99,0.3);
+      border-radius: 28px;
+      padding: 52px 56px;
+      max-width: 380px;
+      width: 90%;
+      box-shadow: 0 0 80px rgba(76,175,80,0.15), 0 0 0 1px rgba(168,224,99,0.06);
+      animation: popUp 0.5s cubic-bezier(.175,.885,.32,1.275) both;
+    }
+
+    @keyframes popUp {
+      from { transform: scale(0.7) translateY(20px); opacity: 0; }
+      to   { transform: scale(1) translateY(0);      opacity: 1; }
+    }
+
+    .success-frog {
+      font-size: 72px;
+      display: block;
+      margin-bottom: 16px;
+      animation: hop 2s cubic-bezier(.36,.07,.19,.97) infinite;
+      filter: drop-shadow(0 8px 20px rgba(76,175,80,0.5));
+    }
+
+    .success-title {
+      font-family: var(--lilita);
+      font-size: 38px;
+      color: var(--lime);
+      text-shadow: 0 0 30px rgba(168,224,99,0.4);
+      margin-bottom: 8px;
+    }
+
+    .success-sub {
+      font-family: var(--caveat);
+      font-size: 18px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 28px;
+      font-style: italic;
+    }
+
+    .close-btn {
+      font-family: var(--nunito);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(168,224,99,0.6);
+      background: transparent;
+      border: 1.5px solid rgba(168,224,99,0.2);
+      padding: 9px 24px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .close-btn:hover {
+      color: var(--lime);
+      border-color: rgba(168,224,99,0.5);
+      background: rgba(168,224,99,0.06);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Watercolor background -->
+  <div class="wc-bg">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="blob b4"></div>
+    <div class="blob b5"></div>
+  </div>
+
+  <!-- Floating frogs -->
+  <div class="floaties" id="floaties"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-brand" href="https://x.com/Thefrogpfp" target="_blank" rel="noopener">
+      <div class="frog-avatar"><img src="img/frogPFP.png" alt="The Frog PFP Logo" /></div>
+      <span class="brand-text">The Frog PFP</span>
+    </a>
+    <a class="nav-handle" href="https://x.com/Thefrogpfp" target="_blank" rel="noopener">@Thefrogpfp</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="hero-frog">🐸</span>
+    <div class="hero-eyebrow">we don't explain the drip. we just hop.</div>
+    <div class="hero-title">
+      <span class="hop">HOP</span> ON THE<br><span class="list">LIST.</span>
+    </div>
+    <div class="hero-tagline">secure your frog before it's too late 🍃</div>
+    <div class="badges">
+      <span class="badge badge-green">🐸 222 Frogs</span>
+      <span class="badge badge-blue">Ethereum</span>
+      <span class="badge badge-yellow">✦ Genesis</span>
+    </div>
+  </div>
+
+  <!-- Lily pad divider -->
+  <div class="lily-divider">
+    <div class="lily-line"></div>
+    <span class="lily-icon">🪷</span>
+    <div class="lily-line"></div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-wrap">
+
+    <!-- X Handle -->
+    <div class="field">
+      <div class="field-label">
+        <span class="req-dot"></span>
+        your x handle
+      </div>
+      <input class="input" id="handle" type="text" placeholder="@handle" autocomplete="off" spellcheck="false" />
+      <div class="err-msg" id="handle-err">🐸 ribbit — drop your x handle first</div>
+    </div>
+
+    <!-- Tasks -->
+    <div class="tasks-box">
+      <div class="tasks-title">complete the tasks</div>
+
+      <div class="task-row" id="row1">
+        <div class="task-left">
+          <input class="task-cb" type="checkbox" id="t1" disabled />
+          <label class="task-text" for="t1">follow @Thefrogpfp</label>
+        </div>
+        <a class="go-btn" id="go1" href="https://x.com/Thefrogpfp" target="_blank" rel="noopener">go ↗</a>
+      </div>
+
+      <div class="task-row" id="row2">
+        <div class="task-left">
+          <input class="task-cb" type="checkbox" id="t2" disabled />
+          <label class="task-text" for="t2">comment under the tweet</label>
+        </div>
+        <a class="go-btn" id="go2" href="https://x.com/Thefrogpfp/status/2055237513048932411" target="_blank" rel="noopener">go ↗</a>
+      </div>
+
+      <div class="task-row" id="row3">
+        <div class="task-left">
+          <input class="task-cb" type="checkbox" id="t3" disabled />
+          <label class="task-text" for="t3">turn on notifications</label>
+        </div>
+        <a class="go-btn" id="go3" href="https://x.com/Thefrogpfp" target="_blank" rel="noopener">go ↗</a>
+      </div>
+    </div>
+    <div class="err-msg" id="tasks-err" style="margin-bottom:14px;">🐸 you gotta click both go buttons first!</div>
+
+    <!-- ETH Address -->
+    <div class="field">
+      <div class="field-label">
+        <span class="req-dot"></span>
+        your eth address
+      </div>
+      <input class="input" id="eth" type="text" placeholder="0x..." autocomplete="off" spellcheck="false" />
+      <div class="err-msg" id="eth-err">🐸 that's not a valid eth address</div>
+    </div>
+
+    <!-- Submit -->
+    <button class="submit-btn" id="submit-btn">
+      <span id="btn-text">🐸 SECURE MY SPOT</span>
+    </button>
+
+  </div>
+
+  <!-- SUCCESS -->
+  <div id="success">
+    <div class="success-card">
+      <span class="success-frog">🐸</span>
+      <div class="success-title">YOU'RE IN!</div>
+      <div class="success-sub">your frog is on the lily pad · stay hoppy 🍃</div>
+      <button class="close-btn" onclick="document.getElementById('success').classList.remove('show')">close</button>
+    </div>
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzF1D6jHR3mleObE6yUhMbk3y9bSQgUljE9yXVyeOHfc7sP1WfQbzRLfc9CANqWbhT4/exec';
+
+    // Floating frogs
+    const emojis = ['🐸','🍃','🌿','🪷','💚','🐸','🌱','🐸'];
+    const floaties = document.getElementById('floaties');
+    for (let i = 0; i < 18; i++) {
+      const el = document.createElement('div');
+      el.className = 'floaty';
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.cssText = `
+        left: ${Math.random() * 100}%;
+        font-size: ${16 + Math.random() * 18}px;
+        animation-duration: ${12 + Math.random() * 18}s;
+        animation-delay: ${-Math.random() * 28}s;
+      `;
+      floaties.appendChild(el);
+    }
+
+    // Go buttons auto-check
+    [['go1','t1','row1'],['go2','t2','row2'],['go3','t3','row3']].forEach(([goId, cbId, rowId]) => {
+      document.getElementById(goId).addEventListener('click', () => {
+        setTimeout(() => {
+          document.getElementById(cbId).checked = true;
+          document.getElementById(rowId).classList.add('done');
+        }, 800);
+      });
+    });
+
+    // Submit
+    document.getElementById('submit-btn').addEventListener('click', async () => {
+      let valid = true;
+
+      const handle = document.getElementById('handle');
+      const hErr   = document.getElementById('handle-err');
+      if (!handle.value.trim()) {
+        handle.classList.add('error'); hErr.classList.add('show'); valid = false;
+      } else {
+        handle.classList.remove('error'); hErr.classList.remove('show');
+      }
+
+      const eth  = document.getElementById('eth');
+      const eErr = document.getElementById('eth-err');
+      if (!/^0x[a-fA-F0-9]{40}$/.test(eth.value.trim())) {
+        eth.classList.add('error'); eErr.classList.add('show'); valid = false;
+      } else {
+        eth.classList.remove('error'); eErr.classList.remove('show');
+      }
+
+      const tErr = document.getElementById('tasks-err');
+      if (!document.getElementById('t1').checked || !document.getElementById('t2').checked || !document.getElementById('t3').checked) {
+        tErr.classList.add('show'); valid = false;
+      } else {
+        tErr.classList.remove('show');
+      }
+
+      if (!valid) return;
+
+      const btn = document.getElementById('submit-btn');
+      const txt = document.getElementById('btn-text');
+      btn.disabled = true;
+      txt.textContent = '🐸 hopping in...';
+
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ handle: handle.value.trim(), eth: eth.value.trim() })
+        });
+        document.getElementById('success').classList.add('show');
+        txt.textContent = '🐸 hopped in! ✓';
+      } catch (err) {
+        btn.disabled = false;
+        txt.textContent = '🐸 error — try again';
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

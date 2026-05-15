@@ -1,0 +1,7 @@
+# Ignore everything by default
+*
+!.gitignore
+!index.html
+!img/
+!img/**/*.png
+!README.md
