@@ -482,6 +482,24 @@
       box-shadow: 0 2px 8px rgba(168,224,99,0.2);
     }
 
+    /* Sub-input inside tasks box (comment link) */
+    .sub-input-wrap {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+      margin-top: 0;
+    }
+    .sub-input-wrap.show {
+      max-height: 120px;
+      opacity: 1;
+      margin-top: 14px;
+    }
+    .sub-input {
+      font-size: 13px;
+      padding: 11px 14px;
+    }
+
     /* ── SUBMIT ── */
     .submit-btn {
       width: 100%;
@@ -694,7 +712,7 @@
       <div class="task-row" id="row2">
         <div class="task-left">
           <input class="task-cb" type="checkbox" id="t2" disabled />
-          <label class="task-text" for="t2">comment under the tweet</label>
+          <label class="task-text" for="t2">like + retweet the post</label>
         </div>
         <a class="go-btn" id="go2" href="https://x.com/Thefrogpfp/status/2055768431945736398" target="_blank" rel="noopener">go ↗</a>
       </div>
@@ -702,12 +720,18 @@
       <div class="task-row" id="row3">
         <div class="task-left">
           <input class="task-cb" type="checkbox" id="t3" disabled />
-          <label class="task-text" for="t3">turn on notifications</label>
+          <label class="task-text" for="t3">comment under the post</label>
         </div>
-        <a class="go-btn" id="go3" href="https://x.com/Thefrogpfp" target="_blank" rel="noopener">go ↗</a>
+        <a class="go-btn" id="go3" href="https://x.com/Thefrogpfp/status/2055768431945736398" target="_blank" rel="noopener">go ↗</a>
+      </div>
+
+      <!-- Comment link sub-input (revealed after clicking go on task 3) -->
+      <div class="sub-input-wrap" id="comment-wrap">
+        <input class="input sub-input" id="comment-link" type="url" placeholder="paste your comment link here (https://x.com/...)" autocomplete="off" spellcheck="false" />
+        <div class="err-msg" id="comment-err">🐸 paste your comment link to prove it</div>
       </div>
     </div>
-    <div class="err-msg" id="tasks-err" style="margin-bottom:14px;">🐸 you gotta click both go buttons first!</div>
+    <div class="err-msg" id="tasks-err" style="margin-bottom:14px;">🐸 hit every "go" button before claiming!</div>
 
     <!-- ETH Address -->
     <div class="field">
@@ -765,6 +789,11 @@
       });
     });
 
+    // Reveal comment-link input when user clicks "go" on task 3
+    document.getElementById('go3').addEventListener('click', () => {
+      document.getElementById('comment-wrap').classList.add('show');
+    });
+
     // Submit
     document.getElementById('submit-btn').addEventListener('click', async () => {
       let valid = true;
@@ -792,6 +821,19 @@
         tErr.classList.remove('show');
       }
 
+      // Comment link validation
+      const comment = document.getElementById('comment-link');
+      const cErr    = document.getElementById('comment-err');
+      const commentVal = comment.value.trim();
+      const commentValid = /^https?:\/\/(x\.com|twitter\.com)\/.+\/status\/\d+/i.test(commentVal);
+      if (!commentValid) {
+        comment.classList.add('error'); cErr.classList.add('show');
+        document.getElementById('comment-wrap').classList.add('show');
+        valid = false;
+      } else {
+        comment.classList.remove('error'); cErr.classList.remove('show');
+      }
+
       if (!valid) return;
 
       const btn = document.getElementById('submit-btn');
@@ -804,7 +846,11 @@
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ handle: handle.value.trim(), eth: eth.value.trim() })
+          body: JSON.stringify({
+            handle: handle.value.trim(),
+            eth: eth.value.trim(),
+            commentLink: commentVal
+          })
         });
         document.getElementById('success').classList.add('show');
         txt.textContent = '🐸 hopped in! ✓';
